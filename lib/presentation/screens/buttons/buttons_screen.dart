@@ -42,25 +42,54 @@ class _Buttons_view extends StatelessWidget {
           spacing: 10,          
           alignment: WrapAlignment.center,
           children: [
-            ElevatedButton(onPressed: (){}, child: Text('Elevated Button')),
-            ElevatedButton(onPressed: null, child: Text('Elevated Disable')),
-            ElevatedButton.icon(onPressed: (){}, icon: Icon(Icons.access_alarm_rounded), label: Text('Elevated Icon')),
-            FilledButton(onPressed: (){}, child: Text('Fill Butoon')),
-            FilledButton.icon(onPressed: (){}, icon: Icon(Icons.access_time_outlined), label: Text('Filled Icon')),
-            OutlinedButton(onPressed: (){}, child: Text('Outline Button')),
-            OutlinedButton.icon(onPressed: (){}, icon: Icon(Icons.terminal), label: Text('Outline Icon')),
-            TextButton(onPressed: (){}, child: Text('Text Button')),
-            TextButton.icon(onPressed: (){}, icon: Icon(Icons.accessible_forward_rounded), label: Text('Text Icon')),
-            IconButton(onPressed: (){}, icon: Icon(Icons.add_chart_sharp)),
+            ElevatedButton(onPressed: (){}, child: const Text('Elevated Button')),
+            const ElevatedButton(onPressed: null, child: Text('Elevated Disable')),
+            ElevatedButton.icon(onPressed: (){}, icon: const Icon(Icons.access_alarm_rounded), label: const Text('Elevated Icon')),
+            FilledButton(onPressed: (){}, child: const Text('Fill Butoon')),
+            FilledButton.icon(onPressed: (){}, icon: const Icon(Icons.access_time_outlined), label: const Text('Filled Icon')),
+            OutlinedButton(onPressed: (){}, child: const Text('Outline Button')),
+            OutlinedButton.icon(onPressed: (){}, icon: const Icon(Icons.terminal), label: const Text('Outline Icon')),
+            TextButton(onPressed: (){}, child: const Text('Text Button')),
+            TextButton.icon(onPressed: (){}, icon: const Icon(Icons.accessible_forward_rounded), label: const Text('Text Icon')),
+            IconButton(onPressed: (){}, icon: const Icon(Icons.add_chart_sharp)),
             IconButton(
               onPressed: (){}, 
-              icon: Icon(Icons.add_chart_sharp), 
+              icon: const Icon(Icons.add_chart_sharp), 
               style: ButtonStyle(
                 backgroundColor: MaterialStatePropertyAll(colors.primary),
-                iconColor: MaterialStatePropertyAll(Colors.white)
+                iconColor: const MaterialStatePropertyAll(Colors.white)
                 ),),
+            const _CustomButton()
 
           ],
+        ),
+      ),
+    );
+  }
+}
+
+
+class _CustomButton extends StatelessWidget {
+  const _CustomButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: Material(
+        color: colors.primary,
+        child: InkWell(
+          onTap: (){},
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: const Text(
+              'Hola Mundo',
+              style: TextStyle(
+                color: Colors.white
+              ),
+              )
+            ),
         ),
       ),
     );
