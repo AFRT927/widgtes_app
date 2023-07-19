@@ -33,17 +33,23 @@ class _CardsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-
-        children: [
-        
-        // spread
-        ...cards.map(
-        (c) => _CardType1(elevation: c['elevation'], lable: c['label']),
-        )
-
-        ],
-
+    return SingleChildScrollView(
+      child: Column(
+    
+          children: [
+          
+          // spread
+          ...cards.map(
+          (c) => _CardType1(elevation: c['elevation'], lable: c['label']),
+          ),
+    
+                  ...cards.map(
+          (c) => _CardType2(elevation: c['elevation'], lable: c['label']),
+          )
+    
+          ],
+    
+      ),
     );
   }
 }
@@ -60,27 +66,69 @@ class _CardType1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Card(
-        elevation: elevation,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
-          child: Column(
-            children: [
+    return Card(
+      elevation: elevation,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: IconButton(
+                onPressed: (){}, 
+                icon: const Icon(Icons.more_vert_outlined))
+              ),
               Align(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  onPressed: (){}, 
-                  icon: const Icon(Icons.more_vert_outlined))
-                ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Text(lable),
-                )
-            ],
-          ),
-          ),
+                alignment: Alignment.bottomLeft,
+                child: Text(lable),
+              )
+          ],
+        ),
+        ),
+    );
+  }
+}
+
+class _CardType2 extends StatelessWidget {
+
+  final String lable;
+  final double elevation;
+
+  const _CardType2({   
+    required this.elevation,
+    required this.lable
+    });
+
+  @override
+  Widget build(BuildContext context) {
+
+    final colors = Theme.of(context).colorScheme;
+
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide(
+          color: colors.primary
+        )
       ),
+      elevation: elevation,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: IconButton(
+                onPressed: (){}, 
+                icon: const Icon(Icons.more_vert_outlined))
+              ),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Text('$lable - outline'),
+              )
+          ],
+        ),
+        ),
     );
   }
 }
