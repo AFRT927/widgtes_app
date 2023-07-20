@@ -18,6 +18,17 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
   bool isLoading = false;
   bool isMounted = true;
 
+  void moveScrollToBottom(){
+    print('entra al move scroll to bottom');
+    if(infiniteScrollController.position.pixels + 200 <= infiniteScrollController.position.maxScrollExtent) return;
+    print('XXXXXXXXXXXXXX intenta animar XXXXXXXXXXXXXXXX');
+    infiniteScrollController.animateTo(
+    infiniteScrollController.position.pixels + 120, 
+    duration: const Duration(milliseconds: 300), 
+    curve: Curves.fastOutSlowIn
+    );
+  }
+
   void add5Images(){
     
     if (!isMounted) return;
@@ -26,7 +37,8 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
       final newImagesIds = List.generate(5, (i) => i + imagesIds.last + 1);
       imagesIds.addAll(newImagesIds);          
     });  
-    
+
+    moveScrollToBottom();    
   }
 
   // simular una tarea asincrona
@@ -38,7 +50,17 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
     if (!isMounted) return;
     setState(() {
       isLoading = false;
-    });  
+    });    
+  }
+
+
+  Future<void> onRefresh() async {
+
+    await Future.delayed(const Duration(seconds: 3));
+    final lastId = imagesIds.last;
+    imagesIds.clear();
+    imagesIds.add(lastId +1);
+    loadNextPage();
   }
 
   @override
@@ -73,28 +95,25 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
           child: Stack(
             children: [
 
-              ListView.builder(          
-            controller: infiniteScrollController,
-            itemCount: imagesIds.length,
-            itemBuilder: (context, index) {
-              return FadeInImage(
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: 300,
-                placeholder: const AssetImage('assets/images/jar-loading.gif'), 
-                image: NetworkImage('https://picsum.photos/id/${imagesIds[index]}/500/300')
-                );
-            },
-            ),
-
-            isLoading ?  const Positioned(
-              bottom: 30,              
-              child: CircularProgressIndicator(
-                      strokeWidth: 4,
-                      backgroundColor: Colors.black12,  
-              )
-              ) :
-              const SizedBox()
+              RefreshIndicator(
+                onRefresh: () {
+                  return onRefresh();
+                },
+                child: ListView.builder(     
+                  physics: const BouncingScrollPhysics(),     
+                  controller: infiniteScrollController,
+                  itemCount: imagesIds.length,
+                  itemBuilder: (context, index) {
+                return FadeInImage(
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: 300,
+                  placeholder: const AssetImage('assets/images/jar-loading.gif'), 
+                  image: NetworkImage('https://picsum.photos/id/${imagesIds[index]}/500/300')
+                  );
+                          },
+                          ),
+              ),
             ],
           ),
       ),
