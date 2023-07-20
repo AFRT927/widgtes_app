@@ -36,17 +36,17 @@ class _HomeView extends StatelessWidget {
       itemCount: appMenuItems.length,
       itemBuilder: (contex, i){
         
-        return _CustonListTile(menuItem: appMenuItems[i],);
+        return _CustomListTile(menuItem: appMenuItems[i],);
       }
       );
   }
 }
 
-class _CustonListTile extends StatelessWidget {
+class _CustomListTile extends StatelessWidget {
   
   final MenuItem menuItem;
   
-  const _CustonListTile({
+  const _CustomListTile({
     super.key,
     required this.menuItem
   });
