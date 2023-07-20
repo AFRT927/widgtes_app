@@ -35,6 +35,10 @@ class _UiControllsViewState extends State<_UiControllsView> {
 
   bool isDeveloper = true;
   Transportation selectedTransportation = Transportation.Car;
+  bool wantsBreakfast = false;
+  bool wantsLunch = false;
+  bool wantsDinner = false;
+
   @override
   Widget build(BuildContext context) {   
 
@@ -54,7 +58,13 @@ class _UiControllsViewState extends State<_UiControllsView> {
           }
           ),
 
-          RadioListTile(
+
+          ExpansionTile(
+            title: const Text('Vehiculo de transporte'),
+            subtitle: Text('$selectedTransportation'),
+            children: [
+
+                        RadioListTile(
             title: const Text('By car'),
             subtitle: const Text('viajar por carro'),
             value: Transportation.Car, 
@@ -101,6 +111,40 @@ class _UiControllsViewState extends State<_UiControllsView> {
                });
             },            
             ),
+
+            ],
+            ),
+
+          CheckboxListTile(
+            title: const Text('Incluir Desayuno?'),
+            value: wantsBreakfast, 
+            onChanged: (value){
+              setState(() {
+                wantsBreakfast = !wantsBreakfast;
+              });
+            }
+            ),
+
+          CheckboxListTile(
+            title: const Text('Incluir Almuerzo?'),
+            value: wantsLunch, 
+            onChanged: (value){
+              setState(() {
+                wantsLunch = !wantsLunch;
+              });
+            }
+            ),
+
+          CheckboxListTile(
+            title: const Text('Incluir Cena?'),
+            value: wantsDinner, 
+            onChanged: (value){
+              setState(() {
+                wantsDinner = !wantsDinner;
+              });
+            }
+            )
+
       ],
     );
   }
