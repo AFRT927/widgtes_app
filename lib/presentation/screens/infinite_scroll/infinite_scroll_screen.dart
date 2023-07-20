@@ -21,11 +21,10 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
   void add5Images(){
     
     if (!isMounted) return;
-
-    setState(() {
-      isLoading = true;
+    setState(() {     
+      isLoading = true;   
       final newImagesIds = List.generate(5, (i) => i + imagesIds.last + 1);
-      imagesIds.addAll(newImagesIds);      
+      imagesIds.addAll(newImagesIds);          
     });  
     
   }
@@ -33,8 +32,13 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
   // simular una tarea asincrona
   Future loadNextPage() async {
     if(isLoading == true) return;
-    await Future.delayed(Duration(seconds: 1));
     add5Images();
+    await Future.delayed( const Duration(seconds: 2) );  
+
+    if (!isMounted) return;
+    setState(() {
+      isLoading = false;
+    });  
   }
 
   @override
@@ -42,10 +46,8 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
     super.initState();
 
     infiniteScrollController.addListener(() {
-      
-      if(infiniteScrollController.position.pixels == infiniteScrollController.position.maxScrollExtent){
-        print("llega al final");   
-        isLoading = false;     
+      isLoading = false;   
+      if(infiniteScrollController.position.pixels == infiniteScrollController.position.maxScrollExtent){               
         loadNextPage();
       }
       
@@ -68,18 +70,32 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
           context: context,
           removeTop: true,
           removeBottom: true,
-          child: ListView.builder(          
-          controller: infiniteScrollController,
-          itemCount: imagesIds.length,
-          itemBuilder: (context, index) {
-            return FadeInImage(
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: 300,
-              placeholder: const AssetImage('assets/images/jar-loading.gif'), 
-              image: NetworkImage('https://picsum.photos/id/${imagesIds[index]}/500/300')
-              );
-          },
+          child: Stack(
+            children: [
+
+              ListView.builder(          
+            controller: infiniteScrollController,
+            itemCount: imagesIds.length,
+            itemBuilder: (context, index) {
+              return FadeInImage(
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: 300,
+                placeholder: const AssetImage('assets/images/jar-loading.gif'), 
+                image: NetworkImage('https://picsum.photos/id/${imagesIds[index]}/500/300')
+                );
+            },
+            ),
+
+            isLoading ?  const Positioned(
+              bottom: 30,              
+              child: CircularProgressIndicator(
+                      strokeWidth: 4,
+                      backgroundColor: Colors.black12,  
+              )
+              ) :
+              const SizedBox()
+            ],
           ),
       ),
         floatingActionButton: FloatingActionButton(
