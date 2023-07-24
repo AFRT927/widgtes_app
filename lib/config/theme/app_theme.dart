@@ -16,14 +16,17 @@ const colorList = <Color> [
 class AppTheme {
 
   final int selectedColor;
+  final bool isLightMode;
 
   AppTheme({
-    this.selectedColor = 0
+    this.selectedColor = 0,
+    this.isLightMode = true
   }) : assert( selectedColor >= 0 && selectedColor <= (colorList.length - 1),'selectedColor must be within 0 and ${(colorList.length - 1)}');
 
   ThemeData getTheme() => ThemeData(
     useMaterial3: true,
-    brightness: Brightness.light,
+    
+    brightness: isLightMode ? Brightness.light : Brightness.dark,
     colorSchemeSeed: colorList[selectedColor],
     appBarTheme: const AppBarTheme(
       centerTitle: false,

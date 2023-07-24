@@ -11,20 +11,21 @@ class ThemeChangerScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final bool isLigth = ref.watch( themeProvider );
+    final bool isLigthMode = ref.watch( themeProvider );
     final ThemeData theme = Theme.of(context);
     
 
     
-    return Scaffold(
+    return Scaffold(      
       appBar: AppBar(
         title: const Text('Theme Changer'),
         actions: [
           IconButton(            
-            icon: Icon( isLigth ? Icons.light_mode_outlined : Icons.dark_mode_outlined),
+            icon: Icon( isLigthMode ? Icons.dark_mode_outlined : Icons.light_mode_outlined),
             onPressed: (){
               
               ref.read( themeProvider.notifier ).update((state) => !state);  
+              //ref.read(themeNotifierProvider.notifier).updateShouldNotify(old, current);
                     
             },
             )
@@ -42,12 +43,13 @@ class _ThemeChangerView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
 
     final List<Color> colors = ref.watch(colorListProvider);
+    final int selectedColor = ref.watch(selectedColorProvider);    
 
-    return ListView.builder(
+    return ListView.builder(      
       itemCount: colors.length,
       itemBuilder: (context, i) {    
         final Color color = colors[i];    
-        return RadioListTile(
+        return RadioListTile(          
           title: Text(
             'Este Color',
             style: TextStyle(
@@ -57,9 +59,9 @@ class _ThemeChangerView extends ConsumerWidget {
           subtitle: Text('${color.value}'),
           activeColor: color,
           value: i, 
-          groupValue: 0, 
-          onChanged: (value) {
-            // todo: notificar el cambio
+          groupValue: selectedColor, 
+          onChanged: (value) {            
+             ref.read(selectedColorProvider.notifier).state = i;
           },);
       },
       );

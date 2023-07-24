@@ -56,10 +56,9 @@ class CounterScreen extends ConsumerWidget {
     // el watch esta pendiente de los cambios del provider
     final int clickCounter = ref.watch( counterProvider );
     final bool isLigth = ref.watch( themeProvider );
-    final ThemeData theme = Theme.of(context);
+    
 
-    return Scaffold(
-      backgroundColor: !isLigth ? theme.primaryColorLight : theme.primaryColorDark,
+    return Scaffold(      
       appBar: AppBar(
         title: const Text('Counter using ReiverPod'),
         actions: [
