@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:widgets_app/config/theme/app_theme.dart';
 import 'package:widgets_app/presentation/providers/theme_provider.dart';
 
 class ThemeChangerScreen extends ConsumerWidget {
@@ -11,7 +12,7 @@ class ThemeChangerScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final bool isLigthMode = ref.watch( themeProvider );
+    final bool isLigthMode = ref.watch( themeNotifierProvider ).isLightMode;
     final ThemeData theme = Theme.of(context);
     
 
@@ -24,7 +25,7 @@ class ThemeChangerScreen extends ConsumerWidget {
             icon: Icon( isLigthMode ? Icons.dark_mode_outlined : Icons.light_mode_outlined),
             onPressed: (){
               
-              ref.read( themeProvider.notifier ).update((state) => !state);  
+              ref.read( themeNotifierProvider.notifier ).toggleDarkMode();  
               //ref.read(themeNotifierProvider.notifier).updateShouldNotify(old, current);
                     
             },
